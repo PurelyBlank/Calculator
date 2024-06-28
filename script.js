@@ -8,7 +8,7 @@ const DECIMAL_SYMBOL = '.';
 const PLUS_MINUS = '+/-';
 const ROUND_DECIMAL = 10;
 const UPPER_BOUND_NUMBER_LEN = 16;
-const ERROR_OUT_OF_BOUNDS = "ERROR: Number Out of Bounds...";
+const ERROR_OUT_OF_BOUNDS = "ERROR: Number too long...";
 
 
 function add(a, b) {
@@ -77,8 +77,9 @@ function clearAll() {
 
 
 function clearChar() {
-    if (number != 0) {
-        clearLastChar = number.slice(0, number.length - 1);
+    let tempNum = convertToString(number);
+    if (tempNum != 0) {
+        clearLastChar = tempNum.slice(0, tempNum.length - 1);
         displayExpression(clearLastChar);
         number = clearLastChar;
     }
@@ -94,7 +95,7 @@ function convertToString(value) {
 }
 
 
-function convertToInt(value) {
+function convertToFloat(value) {
     intValue = parseFloat(value);
     if (isNaN(intValue)) {
         return null;
@@ -107,18 +108,45 @@ function convertToInt(value) {
 
 
 function formNumber(num) {
-    return convertToInt(convertToString(number) + num);
+    return convertToFloat(convertToString(number) + num);
 }
 
 
 function parseNumber(num) {
     if (!operator_type) {
-        newNum = number == 0 ? num : formNumber(num);
+        newNum = number == 0 ? convertToFloat(num) : formNumber(num);
         if (newNum === 0 && number !== 0) 
             displayExpression(ERROR_OUT_OF_BOUNDS);
         else
             displayExpression(newNum);
         number = newNum;
+    } else {
+        
+    }
+}
+
+
+function checkDecimal(value) {
+    let stringNum = convertToString(number);
+    let stringNumLen = stringNum.length;
+    return value === DECIMAL_SYMBOL && !stringNum.includes(DECIMAL_SYMBOL) && stringNumLen > 0 && stringNum[stringNum.length - 1] !== ".";
+}
+
+
+function checkPositiveNegative(value) {
+    return value === PLUS_MINUS;
+}
+
+
+function convertPositiveNegative() {
+    if (number != 0) {
+        let stringNum = convertToString(number);
+        if (stringNum[0] === "-") {
+            number = convertToFloat(stringNum.slice(1));
+        }
+        else {
+            number = convertToFloat("-" + stringNum);
+        }
     }
 }
 
@@ -132,6 +160,14 @@ function parseButton(value) {
     }
     else if (NUMBERS.includes(value)) {
         parseNumber(value);
+    }
+    else if (checkDecimal(value)) {
+        number = number + '.';
+        displayExpression(number);
+    }
+    else if (checkPositiveNegative(value)) {
+        convertPositiveNegative();
+        displayExpression(number);
     }
 }
 
