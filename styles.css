@@ -2,6 +2,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     margin: 0px;
     height: 100vh;
     background-color: #30424F;
@@ -135,4 +136,28 @@ button:active {
 
 #clear_all:hover, #clear:hover {
     background-color: #3e76d8;
+}
+
+
+footer {
+    color: white;
+    padding-top: 50px;
+}
+
+.github_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.GitHub {
+    background-color: inherit;
+    width: 50px;
+    height: 50px;
+    transition: all .2s ease-in-out;
+}
+
+.GitHub:hover { 
+    transform: scale(1.1); 
 }
