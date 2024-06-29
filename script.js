@@ -192,9 +192,23 @@ buttons.forEach(button => {
     button.addEventListener("click", (event) => {
         const value = event.target.value;
         parseButton(value);
-        console.log(expression_result, number, operator_type);
     });
 });
+
+window.addEventListener("keydown", keyPress);
+
+
+function getCorrespondingKey(key) {
+    if (key === "*") return "x";
+    if (key === "Enter") return "=";
+    return key;
+}
+
+function keyPress(e) {
+    key = getCorrespondingKey(e.key);
+    if (OPERATORS.includes(key) || NUMBERS.includes(key) || DECIMAL_SYMBOL === key || "=" === key || "." === key)
+        parseButton(key);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     displayResult(0);
