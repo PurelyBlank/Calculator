@@ -136,6 +136,10 @@ function isOperator(value) {
 }
 
 function doResult(value) {
+    console.log(value);
+    if (!operator_type) {
+        return;
+    }
     let result = operate(expression_result, number, value);
     if (result === DIVIDE_BY_ZERO_ERROR) {
         expression_result = null;
@@ -150,7 +154,7 @@ function doResult(value) {
 
 
 function doOperation(value) {
-    if (!operator_type) {
+    if (!operator_type && !expression_result) {
         operator_type = value;
         expression_result = number;
         number = 0;
@@ -175,8 +179,11 @@ function parseButton(value) {
         displayExpression(number);
     } else if (isOperator(value)) {
         doOperation(value);
-    } else { // assumes equality
+    } else if (value === "=") { // assumes equality
         doResult(operator_type);
+    }
+    else {
+        console.log("Operator not implemented");
     }
 }
 
